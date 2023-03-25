@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Quiz</title>
+	<style type="text/css">
+		.main{
+			width: 100%;
+			padding-top: 20px;
+			padding-bottom: 30px;
+			background: lightgreen;
+			border-radius: 5px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+		.div,.table{
+			border-radius: 5px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+		.row{
+			transition-delay: 2s;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+		}
+		.row td{
+			text-align: left;
+			font-family:sans-serif;
+			padding: 5px 0px 5px 0px;
+			width: 300px;
+			margin: 2px;
+		}
+		.table{
+			display: block;
+			padding: 10px;
+			background: lightgreen;
+		}
+		.result{
+			display: block;
+			text-align: center;
+		}
+		#ques{
+			font-family: sans-serif;
+			font-size: 18px;
+		}
+		#submit{
+			margin-top: 10px;
+			background: dodgerblue;
+			color: white;
+			font-size: 15px;
+			padding: 6px 13px 6px 13px;
+			border-radius: 5px;
+		}
+		#btn{
+			margin-top: 10px;
+			background: dodgerblue;
+			color: white;
+			font-size: 15px;
+			padding: 6px 13px 6px 13px;
+			border-radius: 5px;
+		}
+		#q{
+			font-size: 20px;
+			padding-right: 5px;
+		}
+		caption{
+			font-family:sans-serif;
+			font-weight: bolder;
+			font-size: 22px;
+			text-decoration: underline;
+			text-decoration-color: blue;
+			margin-bottom: 30px;
+		}
+	</style>
+</head>
+<body onload="modify()" style="background: gray;">
+	<div class="div">
+		<div class="main">
+		<table class="table">
+			<caption>Quiz</caption>
+			<tr>
+				<td colspan="4" style="padding-left: 4px">
+					<span id="q" >Q<span id="qno"></span>)</span><span id="ques"> </span>
+				</td>
+			</tr>
+			<tr class="row">
+				<td >
+					<input type="radio" id="op1"  value="option1" name="options">
+					<label id="l1" for="op1"></label>
+				</td>
+				<td>
+					<input type="radio" id="op2" value="option2" name="options">
+					<label id="l2" for="op2"></label>
+				</td>
+				<td>
+					<input type="radio" id="op3" value="option3" name="options">
+					<label id="l3" for="op3"></label>
+				</td>
+				<td>
+					<input type="radio" id="op4" value="option4" name="options">
+					<label id="l4" for="op4"></label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit"  id="submit" value="Submit" onclick="modify()">
+				</td>
+			</tr>
+		</table>
+		<div class="result">
+			<h2 style="text-decoration: underline;text-decoration-color:orange;color: darkblue;">Result</h2>
+			<h3>Your Score is <span id="res"></span></h3>
+			<br>
+			<button id='btn' onclick="modify()">Click to play Again</button>
+		</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+
+		let q=document.getElementById('ques');
+		let l1=document.getElementById('l1');
+		let l2=document.getElementById('l2');
+		let l3=document.getElementById('l3');
+		let l4=document.getElementById('l4');
+		let op=document.getElementsByName('options');
+		let qno=document.getElementById('qno');
+		let res=document.getElementById('res');
+		let ind=0;
+
+		var questions=[
+			{
+				'question':'HTML stands for ',
+				'option1':'HighText Machine Language',
+				'option2':'HyperText and links Markup Language',
+				'option3':'HyperText Markup Language',
+				'option4':'None of these',
+				'answer':'option3'
+			},
+			{
+				'question':'The correct sequence of HTML tags for starting a webpage is  ',
+				'option1':'Head, Title, HTML, body',
+				'option2':'HTML, Body, Title, Head',
+				'option3':'HTML, Head, Title, Body',
+				'option4':'HTML, Head, Title, Body',
+				'answer':'option3'
+			},
+			{
+				'question':'Which of the following element is responsible for making the text bold in HTML? ',
+				'option1':'<pre>',
+				'option2':'<a>',
+				'option3':'<b>',
+				'option4':'<br>',
+				'answer':'option3'
+			},
+			{
+				'question':'Which of the following tag is used for inserting the largest heading in HTML? ',
+				'option1':'<h3>',
+				'option2':'<h1>',
+				'option3':'<h5>',
+				'option4':'<h6>',
+				'answer':'option2'
+			}
+		];
+		let score=0;
+		let quiz=document.getElementsByClassName('table');
+		let r=document.getElementsByClassName('result');
+		function Check() {
+			for (var i = 0; i < op.length; i++) {
+				if (op[i].checked){
+					if (op[i].value==questions[ind-1].answer) score+=5;
+					document.querySelector('input[type=radio][value='+op[i].value+']:checked').checked = false;
+				}
+			}
+		}
+
+		function modify() {
+			if (ind!=0) Check();
+			if (ind==4) {
+				quiz[0].style.display='none';
+				r[0].style.display='block';
+				res.innerText=score;
+				res.style.color='blue';
+				score=0;
+				ind=0;
+			}
+			else{
+				r[0].style.display='none';
+				quiz[0].style.display='block';
+				qno.innerText=ind+1;
+				q.innerText=questions[ind].question;
+				l1.innerText=questions[ind].option1;
+				l2.innerText=questions[ind].option2;
+				l3.innerText=questions[ind].option3;
+				l4.innerText=questions[ind].option4;
+				ind++;
+			}
+		}
+
+
+
+	</script>
+</body>
+</html>
